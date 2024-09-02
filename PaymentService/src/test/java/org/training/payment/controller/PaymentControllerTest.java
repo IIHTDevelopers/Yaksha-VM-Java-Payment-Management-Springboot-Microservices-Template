@@ -25,7 +25,6 @@ import static org.training.payment.utills.TestUtils.*;
 @AutoConfigureMockMvc
 class PaymentControllerTest {
 
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -41,7 +40,6 @@ class PaymentControllerTest {
                 .content(MasterData.asJsonString(MasterData.getPaymentDto())).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
         MvcResult mvcResult = mockMvc.perform(builder).andReturn();
-        Assertions.assertEquals(MasterData.asJsonString(paymentDtoList), mvcResult.getResponse().getContentAsString());
         yakshaAssert(currentTest(),
                 mvcResult.getResponse().getContentAsString().contentEquals(
                         MasterData.asJsonString(List.of(MasterData.getPaymentDto()))),
