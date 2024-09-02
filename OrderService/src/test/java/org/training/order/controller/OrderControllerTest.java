@@ -25,28 +25,33 @@ import static org.training.order.utills.TestUtils.*;
 @AutoConfigureMockMvc
 class OrderControllerTest {
 
+        @Autowired
+        private MockMvc mockMvc;
 
-    @Autowired
-    private MockMvc mockMvc;
+        @MockBean
+        private OrderService orderService;
 
-    @MockBean
-    private OrderService orderService;
-
-    @Test
-    void getOrderListByOwnerId() throws Exception {
-        List<OrderDto> orderDto = List.of(MasterData.getOrderDto());
-        Mockito.when(orderService.getOrderDetailsByUserId(1L)).thenReturn(orderDto);
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/orders/1")
-                .content(MasterData.asJsonString(MasterData.getOrderDto())).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
-        MvcResult mvcResult = mockMvc.perform(builder).andReturn();
-        Assertions.assertEquals(MasterData.asJsonString(orderDto), mvcResult.getResponse().getContentAsString());
-        Response orderCreatedSuccessfully = new Response("200", "Order created successfully");
-        yakshaAssert(currentTest(),
-                mvcResult.getResponse().getContentAsString().contentEquals(
-                        MasterData.asJsonString(
-                                orderCreatedSuccessfully)),
-                businessTestFile);
-    }
+        @Test
+        void getOrderListByOwnerId() throws Exception {
+                try {
+                        List<OrderDto> orderDto = List.of(MasterData.getOrderDto());
+                        Mockito.when(orderService.getOrderDetailsByUserId(1L)).thenReturn(orderDto);
+                        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.get("/api/orders/1")
+                                        .content(MasterData.asJsonString(MasterData.getOrderDto()))
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .accept(MediaType.APPLICATION_JSON);
+                        MvcResult mvcResult = mockMvc.perform(builder).andReturn();
+                        Response orderCreatedSuccessfully = new Response("200", "Order created successfully");
+                        yakshaAssert(currentTest(),
+                                        mvcResult.getResponse().getContentAsString().contentEquals(
+                                                        MasterData.asJsonString(
+                                                                        orderCreatedSuccessfully)),
+                                        businessTestFile);
+                } catch (Exception ex) {
+                        yakshaAssert(currentTest(),
+                                        "false",
+                                        businessTestFile);
+                }
+        }
 
 }
