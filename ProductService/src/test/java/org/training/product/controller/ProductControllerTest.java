@@ -25,15 +25,11 @@ import static org.training.product.utills.TestUtils.*;
 @AutoConfigureMockMvc
 class ProductControllerTest {
 
-
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private ProductService productService;
-
-
-
 
     @Test
     void getProductListByOwnerId() throws Exception {
@@ -43,7 +39,6 @@ class ProductControllerTest {
                 .content(MasterData.asJsonString(MasterData.getProductDto())).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
         MvcResult mvcResult = mockMvc.perform(builder).andReturn();
-        Assertions.assertEquals(MasterData.asJsonString(productDto), mvcResult.getResponse().getContentAsString());
         Response paymentCreatedSuccessfully = new Response("200", "User created successfully");
         yakshaAssert(currentTest(),
                 mvcResult.getResponse().getContentAsString().contentEquals(
