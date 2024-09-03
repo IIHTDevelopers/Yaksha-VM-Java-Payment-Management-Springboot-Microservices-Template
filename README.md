@@ -2,9 +2,6 @@
 
 - Manages microservices for easy discovery and registration.
 
-### API Gateway
-
-- Provides a single entry point to the microservices and handles routing.
 
 ### User Service
 
